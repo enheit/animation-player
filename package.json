@@ -1,0 +1,36 @@
+{
+  "name": "animation-player",
+  "version": "1.0.1-beta.0",
+  "description": "The animation player for JavaScript",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/enheit/animation-player"
+  },
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack --watch",
+    "build": "webpack"
+  },
+  "author": "Roman Mahotskyi <roman.mahotskyi@gmail.com>",
+  "keywords": [
+    "js",
+    "animation",
+    "svg",
+    "player",
+    "timeline",
+    "svg player",
+    "animation player"
+  ],
+  "bugs": {
+    "email": "roman.mahotskyi@gmail.com",
+    "url": "https://github.com/enheit/animation-player/issues"
+  },
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "awesome-typescript-loader": "^5.2.1",
+    "typescript": "^3.6.4",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.9"
+  }
+}
