@@ -1,12 +1,10 @@
-import { IAnimationPlayer } from "./models/animation-player.model";
-import { SVGPlayerTimeline } from "./animation-player-timeline";
-import { Timings } from "./models/index.model";
-import { SVGPlayerElement } from "./animation-player-element";
-import { ElementConfig } from "./models/animation-player-element.model";
-import { scaleFunc, scale } from "./utils/scale";
-import { Interpolation } from "./utils/interpolation";
+import { AnimationPlayerElement } from './animation-player-element';
+import { AnimationPlayerTimeline } from './animation-player-timeline';
+import { ElementConfig, Timings } from './models/index.model';
+import { Interpolation } from './utils/interpolation';
+import { scale, scaleFunc } from './utils/scale';
 
-export class AnimationPlayer implements IAnimationPlayer {
+export class AnimationPlayer {
   private _onPlayCallback?: () => void;
   private _onPauseCallback?: () => void;
   private _onStopCallback?: () => void;
@@ -22,9 +20,9 @@ export class AnimationPlayer implements IAnimationPlayer {
   private _defaultSpeed = 1;
   private _speed = 1;
   private _speedScale = 1.1;
-  
+
   private _defaultTimelineId: number;
-  private _timelines = new Map<number, SVGPlayerTimeline>();
+  private _timelines = new Map<number, AnimationPlayerTimeline>();
   private _startTime = 0;
   private _endTime = 0;
   private _duration = 0;
@@ -98,7 +96,7 @@ export class AnimationPlayer implements IAnimationPlayer {
   get maxSpeed(): number {
     return this._maxSpeed;
   }
- 
+
   set minSpeed(value: number) {
     if (value < 0) {
       throw new Error('[SVGPlayer] minSpeed cannot be less than 0');
@@ -142,7 +140,7 @@ export class AnimationPlayer implements IAnimationPlayer {
       }
     }
   }
-  
+
   pause(): void {
     if (this._isPlaying) {
       this._isPlaying = false;
@@ -224,7 +222,7 @@ export class AnimationPlayer implements IAnimationPlayer {
   }
 
   createTimeline(): number {
-    const timeline = new SVGPlayerTimeline();
+    const timeline = new AnimationPlayerTimeline();
     this._timelines.set(timeline.id, timeline);
 
     this.updateTimings();
@@ -251,28 +249,28 @@ export class AnimationPlayer implements IAnimationPlayer {
       throw new Error(`[SVGPlayer] Cannot clear unexisting timeline with id ${id}`);
     }
 
-    (this._timelines.get(id) as SVGPlayerTimeline).removeAllElements();
+    (this._timelines.get(id) as AnimationPlayerTimeline).removeAllElements();
   }
 
-  createElement(elementConfig: ElementConfig, timelineId: number = this._defaultTimelineId): SVGPlayerElement {
+  createElement(elementConfig: ElementConfig, timelineId: number = this._defaultTimelineId): AnimationPlayerElement {
     if (!this._timelines.has(timelineId)) {
       throw new Error(`[SVGPlayer] Cannot create and add SVGPlayerElement to not existing timeline with id ${timelineId}`);
     }
 
-    const element = new SVGPlayerElement(elementConfig);
-    (this._timelines.get(timelineId) as SVGPlayerTimeline).addElement(element);
+    const element = new AnimationPlayerElement(elementConfig);
+    (this._timelines.get(timelineId) as AnimationPlayerTimeline).addElement(element);
 
     this.updateTimings();
 
     return element;
   }
 
-  addElement(element: SVGPlayerElement, timelineId: number = this._defaultTimelineId): void {
+  addElement(element: AnimationPlayerElement, timelineId: number = this._defaultTimelineId): void {
     if (!this._timelines.has(timelineId)) {
       throw new Error(`[SVGPlayer] Cannot add SVGPlayerElement to not existing timeline with id ${timelineId}`);
     }
 
-    (this._timelines.get(timelineId) as SVGPlayerTimeline).addElement(element);
+    (this._timelines.get(timelineId) as AnimationPlayerTimeline).addElement(element);
 
     this.updateTimings();
   }
@@ -282,7 +280,7 @@ export class AnimationPlayer implements IAnimationPlayer {
       throw new Error(`[SVGPlayer] Cannot remove SVGPlayerElement from not existing timeline with id ${timelineId}`);
     }
 
-    const timeline = (this._timelines.get(timelineId) as SVGPlayerTimeline);
+    const timeline = (this._timelines.get(timelineId) as AnimationPlayerTimeline);
     const isRemoved = timeline.removeElement(id);
 
     if (isRemoved) {
@@ -356,13 +354,13 @@ export class AnimationPlayer implements IAnimationPlayer {
 
     if (timelines.length === 0) {
       return {
-        startTime: 0,
-        endTime: 0,
         duration: 0,
-      }
+        endTime: 0,
+        startTime: 0,
+      };
     }
 
-    let startTimeMin = 0;
+    const startTimeMin = 0;
     let endTimeMax = timelines[0].endTime;
 
     for (let i = 1; i < timelines.length; i++) {
@@ -374,9 +372,9 @@ export class AnimationPlayer implements IAnimationPlayer {
     }
 
     return {
-      startTime: startTimeMin,
+      duration: endTimeMax - startTimeMin,
       endTime: endTimeMax,
-      duration: endTimeMax - startTimeMin
-    }
+      startTime: startTimeMin,
+    };
   }
 }
