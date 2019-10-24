@@ -1,14 +1,13 @@
-import { IAnimationPlayerTimeline } from "./models/animation-player-timeline.model";
-import { SVGPlayerElement } from "./animation-player-element";
-import createIdGenerator from "./utils/id-generator";
-import { Timings } from "./models/index.model";
+import { AnimationPlayerElement } from './animation-player-element';
+import { Timings } from './models/index.model';
+import createIdGenerator from './utils/id-generator';
 
 const generateId = createIdGenerator();
 
-export class SVGPlayerTimeline implements IAnimationPlayerTimeline {
+export class AnimationPlayerTimeline {
   readonly id = generateId();
 
-  private _elements = new Map<number, SVGPlayerElement>();
+  private _elements = new Map<number, AnimationPlayerElement>();
 
   private _startTime: number = 0; // First element mount time
   private _endTime: number = 0; // Last element unmount time
@@ -26,7 +25,7 @@ export class SVGPlayerTimeline implements IAnimationPlayerTimeline {
     return this._duration;
   }
 
-  addElement(element: SVGPlayerElement): void {
+  addElement(element: AnimationPlayerElement): void {
     this._elements.set(element.id, element);
 
     this.updateTimings();
@@ -46,11 +45,11 @@ export class SVGPlayerTimeline implements IAnimationPlayerTimeline {
     this._elements.clear();
   }
 
-  getElement(id: number): SVGPlayerElement | undefined {
+  getElement(id: number): AnimationPlayerElement | undefined {
     return this._elements.get(id);
   }
 
-  getAllElements(): SVGPlayerElement[] {
+  getAllElements(): AnimationPlayerElement[] {
     return Array.from(this._elements.values());
   }
 
@@ -71,9 +70,9 @@ export class SVGPlayerTimeline implements IAnimationPlayerTimeline {
 
     if (elements.length === 0) {
       return {
-        startTime: 0,
-        endTime: 0,
         duration: 0,
+        endTime: 0,
+        startTime: 0,
       };
     }
 
@@ -93,9 +92,9 @@ export class SVGPlayerTimeline implements IAnimationPlayerTimeline {
     }
 
     return {
-      startTime: mountTimeMin,
-      endTime: unmountTimeMax,
       duration: unmountTimeMax - mountTimeMin,
+      endTime: unmountTimeMax,
+      startTime: mountTimeMin,
     };
   }
 }

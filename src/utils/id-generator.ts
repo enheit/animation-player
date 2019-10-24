@@ -3,7 +3,7 @@ function createIdGenerator() {
 
   return () => {
     return id++;
-  } 
-};
+  };
+}
 
 export default createIdGenerator;

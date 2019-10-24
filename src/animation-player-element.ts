@@ -1,10 +1,10 @@
-import { IAnimationPlayerElement, ElementConfig, elementUnmountProps } from "./models/animation-player-element.model";
-import createIdGenerator from "./utils/id-generator";
-import { scale } from "./utils/scale";
+import { ElementConfig, ElementUnmountProps } from './models/index.model';
+import createIdGenerator from './utils/id-generator';
+import { scale } from './utils/scale';
 
 const generateId = createIdGenerator();
 
-export class SVGPlayerElement implements IAnimationPlayerElement {
+export class AnimationPlayerElement {
   readonly id = generateId();
 
   private _mountTime = 0;
@@ -16,7 +16,7 @@ export class SVGPlayerElement implements IAnimationPlayerElement {
   private _onBeforeUpdateCallback?: () => void;
   private _onUpdateCallback?: (progress: number) => void;
   private _onAfterUpdateCallback?: () => void;
-  private _onUnmountCallback?: (elementUnmountProps: elementUnmountProps) => void;
+  private _onUnmountCallback?: (elementUnmountProps: ElementUnmountProps) => void;
 
   private _onPlayCallback?: () => void;
   private _onPauseCallback?: () => void;
@@ -132,7 +132,7 @@ export class SVGPlayerElement implements IAnimationPlayerElement {
     this._onAfterUpdateCallback = callback;
   }
 
-  onUnmount(callback: (elementUnmountProps: elementUnmountProps) => void): void {
+  onUnmount(callback: (elementUnmountProps: ElementUnmountProps) => void): void {
     this._onUnmountCallback = callback;
   }
 
@@ -213,9 +213,9 @@ export class SVGPlayerElement implements IAnimationPlayerElement {
       this._isMountFlag = false;
 
       if (this._onUnmountCallback) {
-        const elementUnmountProps: elementUnmountProps = {
-          isBeforeMount: this.isInBeforeMount(elapsedTime),
+        const elementUnmountProps: ElementUnmountProps = {
           isAfterUnmount: this.isInAfterUnmount(elapsedTime),
+          isBeforeMount: this.isInBeforeMount(elapsedTime),
         };
 
         this._onUnmountCallback(elementUnmountProps);
