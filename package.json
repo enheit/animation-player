@@ -10,7 +10,7 @@
   "scripts": {
     "start": "webpack --watch",
     "build": "webpack",
-    "test": "jest --coverage",
+    "test": "jest --coverage --config jest.config.json",
     "lint": "tslint --project ."
   },
   "author": "Roman Mahotskyi <roman.mahotskyi@gmail.com>",
@@ -32,6 +32,7 @@
   "devDependencies": {
     "@types/jest": "^24.0.19",
     "awesome-typescript-loader": "^5.2.1",
+    "clean-webpack-plugin": "^3.0.0",
     "jest": "^24.9.0",
     "ts-jest": "^24.1.0",
     "tslint": "^5.20.0",
