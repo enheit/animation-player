@@ -27,6 +27,18 @@ export class AnimationPlayer {
   private _endTime = 0;
   private _duration = 0;
 
+  get isPlaying(): boolean {
+    return this._isPlaying;
+  }
+
+  get progress(): number {
+    return this._progress;
+  }
+
+  get elapsedSecodns(): number {
+    return this._elapsedSeconds;
+  }
+
   get defaultSpeed(): number {
     return this._defaultSpeed;
   }
@@ -212,10 +224,6 @@ export class AnimationPlayer {
       progress = scaler(progress);
     }
 
-    if (this._isPlaying) {
-      this.pause();
-    }
-
     this._progress = progress;
     this._elapsedSeconds = scale(this._progress, 0, 1, 0, this._duration);
     this.updateTimelines(this._elapsedSeconds);
@@ -242,14 +250,20 @@ export class AnimationPlayer {
 
   removeAllTimelines(): void {
     this._timelines.clear();
+
+    this.updateTimings();
   }
 
-  clearTimeline(id: number = this._defaultTimelineId): void {
+  clearTimeline(id: number = this._defaultTimelineId): boolean {
     if (!this._timelines.has(id)) {
-      throw new Error(`[SVGPlayer] Cannot clear unexisting timeline with id ${id}`);
+      return false;
     }
 
     (this._timelines.get(id) as AnimationPlayerTimeline).removeAllElements();
+
+    this.updateTimings();
+
+    return true;
   }
 
   createElement(elementConfig: ElementConfig, timelineId: number = this._defaultTimelineId): AnimationPlayerElement {
@@ -277,7 +291,7 @@ export class AnimationPlayer {
 
   removeElement(id: number, timelineId: number = this._defaultTimelineId): boolean {
     if (!this._timelines.has(timelineId)) {
-      throw new Error(`[SVGPlayer] Cannot remove SVGPlayerElement from not existing timeline with id ${timelineId}`);
+      return false;
     }
 
     const timeline = (this._timelines.get(timelineId) as AnimationPlayerTimeline);
