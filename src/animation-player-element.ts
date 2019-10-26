@@ -18,9 +18,6 @@ export class AnimationPlayerElement {
   private _onAfterUpdateCallback?: () => void;
   private _onUnmountCallback?: (elementUnmountProps: ElementUnmountProps) => void;
 
-  private _onPlayCallback?: () => void;
-  private _onPauseCallback?: () => void;
-
   private _isMountFlag = false;
   private _isBeofreUpdateFlag = false;
   private _isAfterUpdateFlag = false;
@@ -34,8 +31,13 @@ export class AnimationPlayerElement {
       throw new Error('[SVGPlayerElement] mountTime cannot be less than 0');
     }
 
-    if (this.unmountTime && value > this.unmountTime) {
-      throw new Error('[SVGPlayerElement] mountTime cannot be greater than unmountTime');
+    const exceedsUpdateStartTime = this.updateStartTime && value > this.updateStartTime;
+    const exceedsUpdateEndTime = this.updateEndTime && value > this.updateEndTime;
+    const exceedsUnmountTime = this.unmountTime && value > this.unmountTime;
+    const overlapsUpdateRange = exceedsUpdateStartTime || exceedsUpdateEndTime;
+
+    if (overlapsUpdateRange || exceedsUnmountTime) {
+      throw new Error('[SVGPlayerElement] mountTime cannot be greater than updateStartTime, updateEndTime or unmountTime');
     }
 
     this._mountTime = value;
@@ -50,8 +52,13 @@ export class AnimationPlayerElement {
       throw new Error('[SVGPlayerElement] unmountTime cannot be less than 0');
     }
 
-    if (this.mountTime && value < this.mountTime) {
-      throw new Error('[SVGPlayerElement] unmountTime cannot be less than mountTime');
+    const exceedsUpdateStartTime = this.updateStartTime && value < this.updateStartTime;
+    const exceedsUpdateEndTime = this.updateEndTime && value < this.updateEndTime;
+    const exceedsMountTime = this.mountTime && value < this.mountTime;
+    const overlapsUpdateRange = exceedsUpdateStartTime || exceedsUpdateEndTime;
+
+    if (overlapsUpdateRange || exceedsMountTime) {
+      throw new Error('[SVGPlayerElement] unmountTime cannot be less than updateStartTime, updateEndTime or mountTime');
     }
 
     this._unmountTime = value;
@@ -62,16 +69,16 @@ export class AnimationPlayerElement {
       throw new Error('[SVGPlayerElement] updateStartTime cannot be less than 0');
     }
 
-    if (this.updateEndTime && value > this.updateEndTime) {
-      throw new Error('[SVGPlayerElement] updateStartTime cannot be greater than updateEndTime');
+    const exceedsUpdateEndTime = this.updateEndTime && value > this.updateEndTime;
+    const exceedsMountTime = this.mountTime && value < this.mountTime;
+    const exceedsUnmountTime = this.unmountTime && value > this.unmountTime;
+
+    if (exceedsUpdateEndTime || exceedsUnmountTime) {
+      throw new Error('[SVGPlayerElement] updateStartTime cannot be greater than updateEndTime or unmountTime');
     }
 
-    if (this.mountTime && value < this.mountTime) {
+    if (exceedsMountTime) {
       throw new Error('[SVGPlayerElement] updateStartTime cannot be less than mountTime');
-    }
-
-    if (this.unmountTime && value > this.unmountTime) {
-      throw new Error('[SVGPlayerElement] updateStartTime cannot be greater than unmountTime');
     }
 
     this._updateStartTime = value;
@@ -83,18 +90,18 @@ export class AnimationPlayerElement {
 
   set updateEndTime(value: number) {
     if (value < 0) {
-      throw new Error('[SVGPlayerElement] updateStartTime cannot be less than 0');
+      throw new Error('[SVGPlayerElement] updateEndTime cannot be less than 0');
     }
 
-    if (this.updateStartTime && value < this.updateStartTime) {
-      throw new Error('[SVGPlayerElement] updateEndTime cannot be less than updateStartTime');
+    const exceedsUpdateStartTime = this.updateStartTime && value < this.updateStartTime;
+    const exceedsMountTime = this.mountTime && value < this.mountTime;
+    const exceedsUnmountTime = this.unmountTime && value > this.unmountTime;
+
+    if (exceedsUpdateStartTime || exceedsMountTime) {
+      throw new Error('[SVGPlayerElement] updateEndTime cannot be less than updateStartTime or mountTime');
     }
 
-    if (this.mountTime && value < this.mountTime) {
-      throw new Error('[SVGPlayerElement] updateEndTime cannot be less than mountTime');
-    }
-
-    if (this.unmountTime && value > this.unmountTime) {
+    if (exceedsUnmountTime) {
       throw new Error('[SVGPlayerElement] updateEndTime cannot be greater than unmountTime');
     }
 
@@ -134,14 +141,6 @@ export class AnimationPlayerElement {
 
   onUnmount(callback: (elementUnmountProps: ElementUnmountProps) => void): void {
     this._onUnmountCallback = callback;
-  }
-
-  onPlay(callback: () => void): void {
-    this._onPlayCallback = callback;
-  }
-
-  onPause(callback: () => void): void {
-    this._onPauseCallback = callback;
   }
 
   update(elapsedTime: number): void {
