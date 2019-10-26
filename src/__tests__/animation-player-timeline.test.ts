@@ -154,7 +154,7 @@ describe('AnimationPlayerTimeline', () => {
       timeline.addElement(element2);
       expect(timeline.endTime).toBe(element2.unmountTime);
       timeline.addElement(element3);
-      expect(timeline.endTime).toBe(element3.mountTime);
+      expect(timeline.endTime).toBe(element2.unmountTime);
     });
 
     it('should properly update duration', () => {
