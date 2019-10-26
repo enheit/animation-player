@@ -43,6 +43,8 @@ export class AnimationPlayerTimeline {
 
   removeAllElements(): void {
     this._elements.clear();
+
+    this.updateTimings();
   }
 
   getElement(id: number): AnimationPlayerElement | undefined {
