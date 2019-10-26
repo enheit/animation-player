@@ -1,11 +1,13 @@
 const webpack = require('webpack');
 const path = require('path');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 const config = {
   entry: './src/index.ts',
   output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle.js'
+    path: path.resolve(__dirname, 'lib'),
+    filename: 'bundle.js',
+    libraryTarget: 'commonjs2'
   },
   module: {
     rules: [
@@ -19,12 +21,11 @@ const config = {
     ]
   },
   resolve: {
-    extensions: [
-      '.tsx',
-      '.ts',
-      '.js'
-    ]
-  }
+    extensions: ['.ts']
+  },
+  plugins: [
+    new CleanWebpackPlugin(),
+  ]
 };
 
 module.exports = config;
