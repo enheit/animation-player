@@ -1,7 +1,7 @@
-function createIdGenerator() {
+function createIdGenerator(): () => number {
   let id = 1;
 
-  return () => {
+  return (): number => {
     return id++;
   };
 }
