@@ -1,0 +1,16 @@
+language: node_js
+node_js:
+  - lts/*
+cache:
+  directories:
+  - node_modules
+install:
+  - npm install
+script:
+  - npm run lint
+  - npm run test
+  - npm run build
+after_success:
+  - codecov
+env:
+  - CODECOV_TOKEN="c2f9f50e-1c47-44c7-aed8-7c0f1b59ac91"
