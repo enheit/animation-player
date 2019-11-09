@@ -303,7 +303,7 @@ describe('AnimationPlayer', () => {
       player.createElement(elementConfig, unexistingTimelineId);
     } catch (error) {
       expect(error).toBeInstanceOf(Error);
-      expect(error).toHaveProperty('message', `[SVGPlayer] Cannot create and add SVGPlayerElement to not existing timeline with id ${unexistingTimelineId}`)
+      expect(error).toHaveProperty('message', `[SVGPlayer] Cannot create and add SVGPlayerElement to not existing timeline with id ${unexistingTimelineId}`);
     }
   });
 
@@ -573,7 +573,7 @@ describe('AnimationPlayer', () => {
   it('should properly handle clearing of unexisting timeline', () => {
     const unexistingTimelineId = -1;
     expect(player.clearTimeline(unexistingTimelineId)).toBeFalsy();
-  })
+  });
 
   describe('should update timing', () => {
 
