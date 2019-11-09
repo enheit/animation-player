@@ -1,9 +1,9 @@
 # animation-player
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/enheit/animation-player/blob/master/LICENSE) [![npm version](https://img.shields.io/npm/v/animation-player.svg?style=flat)](https://www.npmjs.com/package/animation-player) [![Build Status](https://travis-ci.org/enheit/animation-player.svg)](https://travis-ci.org/enheit/animation-player) [![Codecov Coverage](https://img.shields.io/codecov/c/github/enheit/animation-player/master.svg?style=flat-square)](https://codecov.io/gh/enheit/animation-player/)
 
-<div style="display: flex; justify-content: center">
+<p align="center">
   <img src="assets/logo.png" width="100px" height="100px">
-</div>
+</p>
 
 The animation player for JavaScript
 
