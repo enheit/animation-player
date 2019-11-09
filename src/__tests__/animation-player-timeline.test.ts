@@ -101,7 +101,7 @@ describe('AnimationPlayerTimeline', () => {
     expect(timeline.startTime).toBe(0);
     expect(timeline.endTime).toBe(0);
     expect(timeline.duration).toBe(0);
-  })
+  });
 
   describe('after removing elements', () => {
     it('should properly update startTime', () => {

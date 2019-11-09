@@ -113,7 +113,7 @@ describe('AnimationPlayerElement', () => {
 
       element.onBeforeUpdate(() => { });
       element.onUpdate(onUpdateCallbackSpy);
-      element.onAfterUpdate(() => { })
+      element.onAfterUpdate(() => { });
 
       element.update(1000);
       element.update(1500);
@@ -275,7 +275,7 @@ describe('AnimationPlayerElement', () => {
       expect(error).toBeInstanceOf(Error);
       expect(error).toHaveProperty('message', '[SVGPlayerElement] updateStartTime cannot be less than mountTime');
     }
-  })
+  });
 
   it('should throw error if updateStartTime is greater than updateEndTime or unmountTime', () => {
     try {
