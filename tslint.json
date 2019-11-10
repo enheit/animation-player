@@ -1,0 +1,25 @@
+{
+  "defaultSeverity": "error",
+  "extends": [
+    "tslint:latest"
+  ],
+  "jsRules": {},
+  "rules": {
+    "object-literal-sort-keys": false,
+    "no-empty": [true, "allow-empty-functions"],
+    "arrow-parens": [true, "ban-single-arg-parens"],
+    "interface-name": [true, "never-prefix"],
+    "quotemark": [true, "single"],
+    "member-access": [true, "no-public"],
+    "variable-name": {
+      "options": [
+        "check-format",
+        "allow-leading-underscore"
+      ]
+    }
+  },
+  "rulesDirectory": [],
+  "exclude": [
+    "node_modules"
+  ]
+}
