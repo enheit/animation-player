@@ -23,7 +23,11 @@ npm install --save animation-player
 
 ## Examples
 
-See the full list of examples
+![Capture](https://user-images.githubusercontent.com/8645216/68547649-8e225000-03ec-11ea-905b-9f5b3daa5eda.PNG)
+
+
+[![Edit sleepy-mendel-r0o7w](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/sleepy-mendel-r0o7w?fontsize=14)
+
 
 ## Documentation
 
